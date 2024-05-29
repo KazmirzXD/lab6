@@ -3,7 +3,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
-
 class WrongStudentName extends Exception {
     public WrongStudentName(String message) {
         super(message);
@@ -28,7 +27,6 @@ class WrongMenuChoice extends Exception {
     }
 }
 
-// Main class
 public class Main {
     public static Scanner scan = new Scanner(System.in);
 
@@ -123,7 +121,7 @@ public class Main {
     }
 
     public static void exercise3() throws IOException {
-        scan.nextLine(); // consume the leftover newline
+        scan.nextLine();
         System.out.println("Podaj imię: ");
         String name = scan.nextLine();
         Student wanted = (new Service()).findStudentByName(name);
