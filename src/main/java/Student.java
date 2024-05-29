@@ -1,5 +1,4 @@
 public class Student {
-
     private String name;
     private int age;
     private String dateOfBirth;
@@ -10,9 +9,17 @@ public class Student {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public String getName() { return name; }
-    public int getAge() { return age; }
-    public String getDateOfBirth() { return dateOfBirth; }
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
 
     @Override
     public String toString() {

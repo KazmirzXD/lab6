@@ -3,6 +3,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
+
 class WrongStudentName extends Exception {
     public WrongStudentName(String message) {
         super(message);
@@ -21,6 +22,13 @@ class WrongDateOfBirth extends Exception {
     }
 }
 
+class WrongMenuChoice extends Exception {
+    public WrongMenuChoice(String message) {
+        super(message);
+    }
+}
+
+// Main class
 public class Main {
     public static Scanner scan = new Scanner(System.in);
 
@@ -41,6 +49,8 @@ public class Main {
                     default:
                         return;
                 }
+            } catch (WrongMenuChoice e) {
+                System.out.println("Niepoprawny wybór! " + e.getMessage());
             } catch (IOException e) {
                 System.out.println("IOException occurred!");
             } catch (WrongStudentName e) {
@@ -53,17 +63,20 @@ public class Main {
         }
     }
 
-    public static int menu() {
+    public static int menu() throws WrongMenuChoice {
         System.out.println("Wciśnij:");
         System.out.println("1 - aby dodać studenta");
         System.out.println("2 - aby wypisać wszystkich studentów");
         System.out.println("3 - aby wyszukać studenta po imieniu");
         System.out.println("0 - aby wyjść z programu");
-        return scan.nextInt();
+        String input = scan.nextLine();
+        if (!input.matches("[0-3]")) {
+            throw new WrongMenuChoice("Niepoprawny wybór! Wybierz 0-3.");
+        }
+        return Integer.parseInt(input);
     }
 
     public static String ReadName() throws WrongStudentName {
-        scan.nextLine();
         System.out.println("Podaj imię: ");
         String name = scan.nextLine();
         if (name.contains(" ")) {
@@ -96,8 +109,8 @@ public class Main {
     }
 
     public static void exercise1() throws IOException, WrongStudentName, WrongAge, WrongDateOfBirth {
-        var name = ReadName();
-        var age = ReadAge();
+        String name = ReadName();
+        int age = ReadAge();
         String date = ReadDateOfBirth();
         (new Service()).addStudent(new Student(name, age, date));
     }
@@ -110,13 +123,13 @@ public class Main {
     }
 
     public static void exercise3() throws IOException {
-        scan.nextLine();
+        scan.nextLine(); // consume the leftover newline
         System.out.println("Podaj imię: ");
-        var name = scan.nextLine();
-        var wanted = (new Service()).findStudentByName(name);
-        if (wanted == null)
+        String name = scan.nextLine();
+        Student wanted = (new Service()).findStudentByName(name);
+        if (wanted == null) {
             System.out.println("Nie znaleziono...");
-        else {
+        } else {
             System.out.println("Znaleziono: ");
             System.out.println(wanted.toString());
         }

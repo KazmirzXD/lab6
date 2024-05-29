@@ -1,37 +1,24 @@
-import java.util.Collection;
 import java.util.ArrayList;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.util.List;
 
 public class Service {
+    private List<Student> students;
 
-    private static final String DB_FILE = "db.txt";
-
-    public void addStudent(Student student) throws IOException {
-        try (BufferedWriter b = new BufferedWriter(new FileWriter(DB_FILE, true))) {
-            b.append(student.toString());
-            b.newLine();
-        }
+    public Service() {
+        students = new ArrayList<>();
     }
 
-    public Collection<Student> getStudents() throws IOException {
-        var students = new ArrayList<Student>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(DB_FILE))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                students.add(Student.parse(line));
-            }
-        }
+    public void addStudent(Student student) {
+        students.add(student);
+    }
+
+    public List<Student> getStudents() {
         return students;
     }
 
-    public Student findStudentByName(String name) throws IOException {
-        var students = getStudents();
+    public Student findStudentByName(String name) {
         for (Student student : students) {
-            if (student.getName().equals(name)) {
+            if (student.getName().equalsIgnoreCase(name)) {
                 return student;
             }
         }
