@@ -1,5 +1,8 @@
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Scanner;
+
 class WrongStudentName extends Exception {
     public WrongStudentName(String message) {
         super(message);
@@ -17,6 +20,7 @@ class WrongDateOfBirth extends Exception {
         super(message);
     }
 }
+
 public class Main {
     public static Scanner scan = new Scanner(System.in);
 
@@ -59,7 +63,7 @@ public class Main {
     }
 
     public static String ReadName() throws WrongStudentName {
-        scan.nextLine(); // Consume newline
+        scan.nextLine();
         System.out.println("Podaj imię: ");
         String name = scan.nextLine();
         if (name.contains(" ")) {
@@ -78,10 +82,14 @@ public class Main {
     }
 
     public static String ReadDateOfBirth() throws WrongDateOfBirth {
-        scan.nextLine(); // Consume newline
+        scan.nextLine();
         System.out.println("Podaj datę urodzenia (DD-MM-YYYY): ");
         String date = scan.nextLine();
-        if (!date.matches("^\\d{2}-\\d{2}-\\d{4}$")) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        sdf.setLenient(false);
+        try {
+            sdf.parse(date);
+        } catch (ParseException e) {
             throw new WrongDateOfBirth("Data urodzenia musi być w formacie DD-MM-YYYY.");
         }
         return date;
@@ -90,7 +98,7 @@ public class Main {
     public static void exercise1() throws IOException, WrongStudentName, WrongAge, WrongDateOfBirth {
         var name = ReadName();
         var age = ReadAge();
-        var date = ReadDateOfBirth();
+        String date = ReadDateOfBirth();
         (new Service()).addStudent(new Student(name, age, date));
     }
 
@@ -102,7 +110,7 @@ public class Main {
     }
 
     public static void exercise3() throws IOException {
-        scan.nextLine(); // Consume newline
+        scan.nextLine();
         System.out.println("Podaj imię: ");
         var name = scan.nextLine();
         var wanted = (new Service()).findStudentByName(name);
